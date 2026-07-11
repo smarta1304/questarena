@@ -757,6 +757,7 @@ class _GameScreenState extends ConsumerState<GameScreen>
           name: myData?['username'] ?? 'Me', 
           avatarUrl: myData?['avatarUrl'],
           rank: myData?['rank'],
+          borderId: myData?['selectedBorder'],
           score: myData?['score'] ?? 0,
           isLeft: true,
           hasAnswered: isP1 ? (room.player1['answers'] as List).length > room.currentQuestionIndex : (room.player2?['answers'] as List? ?? []).length > room.currentQuestionIndex,
@@ -776,6 +777,7 @@ class _GameScreenState extends ConsumerState<GameScreen>
           name: opData?['username'] ?? '...', 
           avatarUrl: opData?['avatarUrl'],
           rank: opData?['rank'],
+          borderId: opData?['selectedBorder'],
           score: opData?['score'] ?? 0,
           isLeft: false,
           hasAnswered: !isP1 ? (room.player1['answers'] as List).length > room.currentQuestionIndex : (room.player2?['answers'] as List? ?? []).length > room.currentQuestionIndex,
@@ -940,6 +942,7 @@ class _PlayerStat extends StatelessWidget {
   final String name;
   final String? avatarUrl;
   final String? rank;
+  final String? borderId;
   final int score;
   final bool isLeft;
   final bool hasAnswered;
@@ -948,6 +951,7 @@ class _PlayerStat extends StatelessWidget {
     required this.name, 
     this.avatarUrl, 
     this.rank,
+    this.borderId,
     required this.score,
     required this.isLeft,
     required this.hasAnswered,
@@ -962,6 +966,7 @@ class _PlayerStat extends StatelessWidget {
         SmartAvatar(
           avatarUrl: avatarUrl,
           rank: rank,
+          borderId: borderId,
           size: 44,
           showBorder: true,
           showGlow: score > 50,

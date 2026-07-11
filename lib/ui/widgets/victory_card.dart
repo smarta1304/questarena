@@ -6,6 +6,7 @@ import 'smart_avatar.dart';
 class VictoryCard extends StatelessWidget {
   final String username;
   final String? avatarUrl;
+  final String? borderId;
   final String rank;
   final String opponentName;
   final int playerScore;
@@ -20,6 +21,7 @@ class VictoryCard extends StatelessWidget {
     super.key,
     required this.username,
     this.avatarUrl,
+    this.borderId,
     required this.rank,
     required this.opponentName,
     required this.playerScore,
@@ -148,6 +150,7 @@ class VictoryCard extends StatelessWidget {
                   SmartAvatar(
                     avatarUrl: avatarUrl,
                     rank: rank,
+                    borderId: borderId,
                     size: 90,
                     showGlow: true,
                     showBorder: true,
@@ -300,6 +303,7 @@ class VictoryCard extends StatelessWidget {
           SmartAvatar(
             avatarUrl: avatarUrl,
             rank: rank,
+            borderId: borderId,
             size: 40,
             showBorder: false,
           ),

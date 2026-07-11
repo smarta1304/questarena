@@ -5,6 +5,7 @@ class MatchmakingModel {
   final String uid;
   final String username;
   final String? avatarUrl;
+  final String? selectedBorder;
   final String rank;
   final String status;
   final String? matchedWith;
@@ -19,6 +20,7 @@ class MatchmakingModel {
     required this.uid,
     required this.username,
     this.avatarUrl,
+    this.selectedBorder,
     required this.rank,
     this.status = 'searching',
     this.matchedWith,
@@ -35,14 +37,15 @@ class MatchmakingModel {
       uid: json['uid'] ?? '',
       username: json['username'] ?? '',
       avatarUrl: json['avatarUrl'],
+      selectedBorder: json['selectedBorder'],
       rank: json['rank'] ?? 'Bronze',
       status: json['status'] ?? 'searching',
       matchedWith: json['matchedWith'],
       gameRoomId: json['gameRoomId'],
       categoryId: json['categoryId'],
       categoryName: json['categoryName'] ?? 'Mixed / Random',
-      eloRating: json['eloRating'] ?? 1200,
-      searchRange: json['searchRange'] ?? 100,
+      eloRating: (json['eloRating'] as num? ?? 1200).toInt(),
+      searchRange: (json['searchRange'] as num? ?? 100).toInt(),
       searchStartedAt: json['searchStartedAt'] != null 
           ? DateTime.parse(json['searchStartedAt']) 
           : DateTime.now(),
@@ -53,6 +56,7 @@ class MatchmakingModel {
     'uid': uid,
     'username': username,
     'avatarUrl': avatarUrl,
+    'selectedBorder': selectedBorder,
     'rank': rank,
     'status': status,
     'matchedWith': matchedWith,

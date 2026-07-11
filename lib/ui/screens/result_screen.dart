@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:confetti/confetti.dart';
@@ -164,6 +163,7 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
           child: VictoryCard(
             username: user.username,
             avatarUrl: user.avatarUrl,
+            borderId: user.selectedBorder,
             rank: user.rank,
             opponentName: opData?['username'] ?? 'Opponent',
             playerScore: myScore,
@@ -180,9 +180,11 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
 
       const shareMessage = "I just played a battle on QuestArena!🏆\n\nThink you can beat me? 🧠\nChallenge me and prove it.\n\n🎮 Play now:\nhttps://quest-arena-self.vercel.app/";
 
-      await Share.shareXFiles(
-        [XFile.fromData(image, name: 'victory_card.png', mimeType: 'image/png')],
-        text: shareMessage,
+      await SharePlus.instance.share(
+        ShareParams(
+          files: [XFile.fromData(image, name: 'victory_card.png', mimeType: 'image/png')],
+          text: shareMessage,
+        ),
       );
     } catch (e) {
       if (mounted) {
@@ -243,15 +245,11 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
   Widget _buildScoreBoard(UserModel user) {
     final isP1 = user.uid == widget.room.player1['uid'];
     
-    final myScore = (isP1 
-        ? widget.room.player1['score'] 
-        : (widget.room.player2 != null ? widget.room.player2!['score'] : 0)) ?? 0;
-        
-    final opScore = (isP1 
-        ? (widget.room.player2 != null ? widget.room.player2!['score'] : 0) 
-        : widget.room.player1['score']) ?? 0;
-
+    final myData = isP1 ? widget.room.player1 : widget.room.player2;
     final opData = isP1 ? widget.room.player2 : widget.room.player1;
+
+    final myScore = myData?['score'] ?? 0;
+    final opScore = opData?['score'] ?? 0;
 
     return Container(
       padding: const EdgeInsets.all(24),
@@ -263,9 +261,21 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _ScoreItem(name: 'YOU', score: myScore, avatar: user.avatarUrl, color: AppColors.teal),
+          _ScoreItem(
+            name: 'YOU', 
+            score: myScore, 
+            avatar: user.avatarUrl, 
+            borderId: user.selectedBorder,
+            color: AppColors.teal,
+          ),
           Text('VS', style: AppTextStyles.label.copyWith(fontSize: 20, color: AppColors.textMuted)),
-          _ScoreItem(name: opData?['username'] ?? 'OPPONENT', score: opScore, avatar: opData?['avatarUrl'], color: AppColors.red),
+          _ScoreItem(
+            name: opData?['username'] ?? 'OPPONENT', 
+            score: opScore, 
+            avatar: opData?['avatarUrl'], 
+            borderId: opData?['selectedBorder'],
+            color: AppColors.red,
+          ),
         ],
       ),
     );
@@ -303,14 +313,15 @@ class _ScoreItem extends StatelessWidget {
   final String name;
   final int score;
   final String? avatar;
+  final String? borderId;
   final Color color;
-  const _ScoreItem({required this.name, required this.score, this.avatar, required this.color});
+  const _ScoreItem({required this.name, required this.score, this.avatar, this.borderId, required this.color});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SmartAvatar(avatarUrl: avatar, size: 64, showBorder: true),
+        SmartAvatar(avatarUrl: avatar, size: 64, showBorder: true, borderId: borderId),
         const SizedBox(height: 12),
         Text(name, style: AppTextStyles.label.copyWith(fontSize: 10)),
         Text('$score', style: AppTextStyles.display.copyWith(fontSize: 32, color: color)),

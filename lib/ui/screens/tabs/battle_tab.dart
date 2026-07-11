@@ -37,6 +37,7 @@ class _BattleTabState extends ConsumerState<BattleTab> {
         uid: user.uid,
         username: user.username,
         avatarUrl: user.avatarUrl,
+        selectedBorder: user.selectedBorder,
         rank: user.rank,
         categoryId: category.id,
         categoryName: category.name,

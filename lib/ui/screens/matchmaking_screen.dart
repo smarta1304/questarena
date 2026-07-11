@@ -220,6 +220,7 @@ class _MatchmakingScreenState extends ConsumerState<MatchmakingScreen> with Tick
                 size: 110,
                 showGlow: true,
                 showBorder: true,
+                borderId: user?.selectedBorder,
               ).animate(onPlay: (c) => c.repeat(reverse: true))
                .shimmer(delay: 2.seconds, duration: 2.seconds, color: AppColors.neonViolet.withValues(alpha: 0.3)),
             ],
